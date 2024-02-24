@@ -1,1 +1,1 @@
-# trained-ai-hub
+# ai-trained-hub
