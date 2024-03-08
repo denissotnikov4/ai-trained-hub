@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Libs",
+    "\\Libs\\Core",
+    "\\Libs\\Core\\Dapper",
+    "\\Libs\\Core\\Dapper\\Connection"
+  ],
+  "SelectedNode": "\\Libs\\Core\\Dapper\\Connection",
+  "PreviewInSolutionExplorer": true
+}
