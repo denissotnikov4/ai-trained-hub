@@ -3,6 +3,7 @@ using Logic.Managers.File.Managers;
 using Logic.Managers.File.Managers.Interfaces;
 using Logic.Services;
 using Logic.Services.Interfaces;
+using Logic.Services.Storages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Logic;

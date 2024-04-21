@@ -1,39 +1,49 @@
 ﻿using AspNetCore.Yandex.ObjectStorage;
 using Dal.Helpers;
-using Dal.Models;
 using FluentResults;
 using Logic.Models;
 using Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Logic.Services;
+namespace Logic.Services.Storages;
 
 /// <summary>
 /// Хранилище данных в Yandex Cloud Object Storage
 /// </summary>
 public class YandexFileStorageService : IFileStorageService
 {
-    private IServiceProvider _serviceProvider;
+    private readonly IYandexStorageService _objectStorageService;
     
-    public YandexFileStorageService(IServiceProvider serviceProvider)
+    public YandexFileStorageService(IYandexStorageService objectStorageService)
     {
-        _serviceProvider = serviceProvider;
+        _objectStorageService = objectStorageService;
     }
     
-    /// <inheritdoc cref="IFileStorageService.GetFileDataAsync"/>
-    public async Task<Stream> GetFileDataAsync(FileModel fileModel)
+    /// <inheritdoc cref="IFileStorageService.GetFileDataStreamAsync"/>
+    public async Task<Stream> GetFileDataStreamAsync(FileModel fileModel)
     {
-        var fileStream = new Result<Stream>();
-        
-        var objectStorageService = _serviceProvider.GetRequiredService<IYandexStorageService>();
-        
-        var result = await objectStorageService.ObjectService.GetAsync(
+        var result = await _objectStorageService.ObjectService.GetAsync(
             $"{fileModel.FileId}_{fileModel.HandledFileName}.{fileModel.FileExtension}");
         
+        var fileStream = new Result<Stream>();
         if (result.IsSuccessStatusCode)
         {
             fileStream = await result.ReadAsStreamAsync();
+        }
+        
+        return fileStream.Value;
+    }
+
+    ///  <inheritdoc cref="IFileStorageService.GetFileBytesAsync"/>
+    public async Task<byte[]> GetFileBytesAsync(FileModel fileModel)
+    {
+        var result = await _objectStorageService.ObjectService.GetAsync(
+            $"{fileModel.FileId}_{fileModel.HandledFileName}.{fileModel.FileExtension}");
+        
+        var fileStream = new Result<byte[]>();
+        if (result.IsSuccessStatusCode)
+        {
+            fileStream = await result.ReadAsByteArrayAsync();
         }
         
         return fileStream.Value;
@@ -45,16 +55,13 @@ public class YandexFileStorageService : IFileStorageService
         var handledUniqueFileName = FileHelper.GetHandledUniqueFileName(fileData.FileName, fileId);
 
         await using var fileStream = fileData.OpenReadStream();
-        var objectStorageService = _serviceProvider.GetRequiredService<IYandexStorageService>();
-        await objectStorageService.ObjectService.PutAsync(fileStream, handledUniqueFileName);
+        await _objectStorageService.ObjectService.PutAsync(fileStream, handledUniqueFileName);
     }
 
     /// <inheritdoc cref="IFileStorageService.DeleteFileAsync"/>
     public async Task DeleteFileAsync(FileModel fileModel)
     {
-        var objectStorageService = _serviceProvider.GetRequiredService<IYandexStorageService>();
-
         var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}.{fileModel.FileExtension}";
-        await objectStorageService.ObjectService.DeleteAsync(fullFileName);
+        await _objectStorageService.ObjectService.DeleteAsync(fullFileName);
     }
 }

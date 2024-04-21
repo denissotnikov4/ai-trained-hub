@@ -2,6 +2,7 @@
 using AspNetCore.Yandex.ObjectStorage.Extensions;
 using AutoMapper;
 using Core.Dapper.Connection;
+using Core.Middlewares;
 using Core.Migration.Extensions;
 using Dal;
 using Logic;
@@ -21,6 +22,15 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Policy1",
+                    policy =>
+                    {
+                        policy.WithOrigins("https://console.yandex.cloud/");
+                    });
+            });
+            
             services.AddSingleton<DapperContext>();
             services.AddMigrationRunner(_configuration, typeof(Dal.Migrations.InitialMigration).Assembly);
 
@@ -64,6 +74,8 @@ namespace Api
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseMiddleware<ErrorHandlingMiddleware>();
         
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

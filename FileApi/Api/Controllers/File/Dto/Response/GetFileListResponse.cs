@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers.File.Dto.Response;
+﻿using Newtonsoft.Json;
+
+namespace Api.Controllers.File.Dto.Response;
 
 /// <summary>
 /// Ответ на получение списка файлов
@@ -8,5 +10,6 @@ public record GetFileListResponse
     /// <summary>
     /// Список полученных файлов
     /// </summary>
-    public required List<GetFileResponse> FileList { get; init; } = new();
+    [JsonProperty("fileList")]
+    public required List<GetFileResponse> FileList { get; init; } = [];
 };

@@ -12,7 +12,7 @@ public interface IFileManager
     /// <summary>
     /// Загрузить файл
     /// </summary>
-    Task<CreateFileResult> UploadFileAsync(CreateFileParam createFileParam, IFormFile file);
+    Task<CreateFileResult> UploadFileAsync(IFormFile file);
     
     /// <summary>
     /// Получить файл

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dal.Enums;
 using Dal.Helpers;
 using Dal.Models;
 using Dal.Repositories.FileRepository.Interfaces;
@@ -8,7 +9,7 @@ using Logic.Records.File.Params;
 using Logic.Records.File.Results;
 using Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+using FileNotFoundException = Core.Exceptions.FileNotFoundException;
 
 namespace Logic.Managers.File.Managers;
 
@@ -26,8 +27,7 @@ internal class FileManager : IFileManager
         _mapper = mapper;
     }
     
-    /// <inheritdoc cref="IFileManager.UploadFileAsync"/>
-    public async Task<CreateFileResult> UploadFileAsync(CreateFileParam createFileParam, IFormFile file)
+    public async Task<CreateFileResult> UploadFileAsync(IFormFile file)
     {
         var fileName = FileHelper.GetFileNameFromFileNameWithExtension(file.FileName);
         var fileExtension = FileHelper.GetExtensionFile(file.FileName);
@@ -39,7 +39,7 @@ internal class FileManager : IFileManager
             FileExtension = fileExtension,
             CreatedTime = DateTime.Now,
             FileSize = file.Length,
-            AccessModifier = createFileParam.AccessModifier
+            AccessModifier = AccessModifier.Private
         };
 
         var fileId = await _fileRepository.SaveFileAsync(fileDal);
@@ -56,11 +56,17 @@ internal class FileManager : IFileManager
     {
         var fileDal = await _fileRepository.GetFileByIdAsync(fileId);
 
+        if (fileDal is null)
+        {
+            throw new FileNotFoundException($"File with id {fileId} not found");
+        }
+
         var fileModel = _mapper.Map<FileModel>(fileDal);
-        var fileStream = await _fileStorageService.GetFileDataAsync(fileModel);
+        
+        var fileBytes = await _fileStorageService.GetFileBytesAsync(fileModel);
         
         var fileByIdResult = _mapper.Map<GetFileResult>(fileDal);
-        fileByIdResult.FileStream = fileStream;
+        fileByIdResult.FileBytes = fileBytes;
         
         return fileByIdResult;
     }
@@ -90,7 +96,12 @@ internal class FileManager : IFileManager
     public async Task DeleteFileAsync(Guid fileId)
     {
         var fileDal = await _fileRepository.GetFileByIdAsync(fileId);
-        
+
+        if (fileDal is null)
+        {
+            throw new FileNotFoundException($"File with id {fileId} not found");
+        }
+
         await _fileRepository.DeleteFileAsync(fileId);
         
         var fileModel = _mapper.Map<FileModel>(fileDal);

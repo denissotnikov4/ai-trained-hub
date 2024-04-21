@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers.File.Dto.Request;
+﻿using Newtonsoft.Json;
+
+namespace Api.Controllers.File.Dto.Request;
 
 /// <summary>
 /// Запрос на получение файла
@@ -8,5 +10,6 @@ public record GetFileRequest
     /// <summary>
     /// Идентификатор файла
     /// </summary>
+    [JsonProperty("fileId")]
     public required Guid FileId { get; init; }
 };

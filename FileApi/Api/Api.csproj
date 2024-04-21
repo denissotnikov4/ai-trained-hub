@@ -38,4 +38,10 @@
     <None Remove="Migrations\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="HttpLogic">
+      <HintPath>bin\Debug\net8.0\HttpLogic.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

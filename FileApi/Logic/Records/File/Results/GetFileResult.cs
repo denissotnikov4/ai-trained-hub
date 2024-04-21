@@ -35,4 +35,9 @@ public record GetFileResult
     /// Stream файла
     /// </summary>
     public Stream FileStream { get; set; }
+
+    /// <summary>
+    /// Массив байтов файла
+    /// </summary>
+    public byte[] FileBytes { get; set; }
 }

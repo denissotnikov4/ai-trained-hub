@@ -11,9 +11,14 @@ namespace Logic.Services.Interfaces;
 public interface IFileStorageService
 {
     /// <summary>
+    /// Получить содержимое файла в виде стрима
+    /// </summary>
+    Task<Stream> GetFileDataStreamAsync(FileModel fileModel);
+    
+    ///  <summary>
     /// Получить содержимое файла в виде массива байт
     /// </summary>
-    Task<Stream> GetFileDataAsync(FileModel fileModel);
+    Task<byte[]> GetFileBytesAsync(FileModel fileModel);
 
     /// <summary>
     /// Сохранить файл
