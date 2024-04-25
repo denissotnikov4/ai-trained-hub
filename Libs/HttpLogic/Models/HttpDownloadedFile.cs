@@ -6,12 +6,12 @@
 public record HttpDownloadedFile
 {
     /// <summary>
-    /// Full file name
+    /// Полное название файла, включающее расширение 
     /// </summary>
     public string FileNameWithExtension { get; init; }
 
     /// <summary>
-    /// File content
+    /// Массив байтов файла
     /// </summary>
     public byte[] FileContent { get; init; }
 }

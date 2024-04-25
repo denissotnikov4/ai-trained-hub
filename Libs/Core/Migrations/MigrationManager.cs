@@ -1,9 +1,8 @@
-﻿using FluentMigrator;
-using FluentMigrator.Runner;
+﻿using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Core.Migration;
+namespace Core.Migrations;
 
 /// <summary>
 /// Менеджер миграций
@@ -13,9 +12,6 @@ public static class MigrationManager
     /// <summary>
     /// Расширение позволяет накатывать миграции
     /// </summary>
-    /// <param name="host"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
     public static IHost MigrateDatabase(this IHost host)
     {
         using var scope = host.Services.CreateScope();

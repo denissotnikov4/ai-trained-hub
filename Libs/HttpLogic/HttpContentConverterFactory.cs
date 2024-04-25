@@ -1,11 +1,22 @@
 using System;
 using HttpLogic.HttpContentParsers;
+using HttpLogic.HttpContentParsers.Interfaces;
 using HttpLogic.Models;
 
 namespace HttpLogic;
 
+/// <summary>
+/// Статический класс, предоставляющий методы для создания конвертеров содержимого HTTP в зависимости от типа содержимого.
+/// </summary>
 public static class HttpContentConverterFactory
 {
+    /// <summary>
+    /// Создает конвертер содержимого HTTP на основе указанного типа содержимого.
+    /// </summary>
+    /// <param name="contentType">Тип содержимого, для которого требуется создать конвертер.</param>
+    /// <returns>Конвертер содержимого HTTP, соответствующий указанному типу содержимого.</returns>
+    /// <exception cref="NotSupportedException">Выбрасывается, если тип содержимого не поддерживается.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Выбрасывается, если тип содержимого не распознан.</exception>
     public static IHttpContentConverter CreateConverter(ContentType contentType)
     {
         return contentType switch

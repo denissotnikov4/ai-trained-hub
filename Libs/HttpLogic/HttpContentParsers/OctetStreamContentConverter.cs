@@ -1,14 +1,22 @@
 ﻿using System.Net.Http.Headers;
+using HttpLogic.Extensions;
+using HttpLogic.HttpContentParsers.Interfaces;
+using HttpLogic.Models;
 
 namespace HttpLogic.HttpContentParsers;
 
+/// <summary>
+/// Реализация конвертера для преобразования объектов в HttpContent и обратно, специализированная для работы с содержимым типа application/octet-stream.
+/// </summary>
 public class OctetStreamContentConverter : IHttpContentConverter
 {
-    public MediaTypeHeaderValue MediaType => new MediaTypeHeaderValue("application/octet-stream");
+    /// <inheritdoc cref="IHttpContentConverter.MediaType"/>
+    public MediaTypeHeaderValue MediaType => new(ContentType.ApplicationOctetStream.ToStringRepresentation());
 
+    /// <inheritdoc cref="IHttpContentConverter.ConvertToHttpContent"/>
     public HttpContent ConvertToHttpContent(object value)
     {
-        if (!(value is byte[] bytes))
+        if (value is not byte[] bytes)
         {
             throw new ArgumentException("Content is not byte[]", nameof(value));
         }
@@ -18,12 +26,10 @@ public class OctetStreamContentConverter : IHttpContentConverter
         return content;
     }
 
+    /// <inheritdoc cref="IHttpContentConverter.ConvertFromHttpContent"/>
     public async Task<TOutput?> ConvertFromHttpContent<TOutput>(HttpContent httpContent)
     {
-        if (httpContent == null)
-        {
-            throw new ArgumentNullException(nameof(httpContent));
-        }
+        ArgumentNullException.ThrowIfNull(httpContent);
 
         if (typeof(TOutput) == typeof(byte[]))
         {

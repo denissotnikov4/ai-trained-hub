@@ -1,7 +1,6 @@
 ﻿using Compunet.YoloV8;
 using Compunet.YoloV8.Plotting;
 using FileLib.Services.Interfaces;
-using HttpLogic.Models;
 using Logic.Managers.Detect.Interfaces;
 using Logic.Records.Detect.Params;
 using Logic.Records.Detect.Results;

@@ -6,7 +6,7 @@ namespace Core.Dal.Base;
 public record BaseEntityDal<T>
 {
     /// <summary>
-    /// уникальный идентфиикатор сущности
+    /// Уникальный идентфикатор сущности
     /// </summary>
     public T Id { get; init; }
 }

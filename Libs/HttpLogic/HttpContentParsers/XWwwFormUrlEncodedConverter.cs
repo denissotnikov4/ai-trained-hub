@@ -4,13 +4,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using HttpLogic.Extensions;
+using HttpLogic.HttpContentParsers.Interfaces;
+using HttpLogic.Models;
 
 namespace HttpLogic.HttpContentParsers;
 
+/// <summary>
+/// Реализация конвертера для преобразования объектов в HttpContent и обратно, специализированная для работы с содержимым типа application/x-www-form-urlencoded.
+/// </summary>
 public class XWwwFormUrlEncodedConverter : IHttpContentConverter
 {
-    public MediaTypeHeaderValue MediaType => new("application/x-www-form-urlencoded");
+    /// <inheritdoc cref="IHttpContentConverter.MediaType"/>
+    public MediaTypeHeaderValue MediaType => new(ContentType.XWwwFormUrlEncoded.ToStringRepresentation());
 
+    /// <inheritdoc cref="IHttpContentConverter.ConvertToHttpContent"/>
     public HttpContent ConvertToHttpContent(object value)
     {
         if (value is IEnumerable<KeyValuePair<string, string>> list)
@@ -19,6 +27,7 @@ public class XWwwFormUrlEncodedConverter : IHttpContentConverter
         throw new Exception($"Bad value for {nameof(FormUrlEncodedContent)}");
     }
 
+    /// <inheritdoc cref="IHttpContentConverter.ConvertFromHttpContent"/>
     public async Task<TOutput?> ConvertFromHttpContent<TOutput>(HttpContent httpContent)
     {
         var contentString = await httpContent.ReadAsStringAsync();

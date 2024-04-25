@@ -1,14 +1,17 @@
 ﻿namespace FileLib;
 
+/// <summary>
+/// Ответ на получение файла
+/// </summary>
 public record FileResponse
 {
     /// <summary>
-    /// Full file name
+    /// Полное название файла
     /// </summary>
-    public string FullFileName { get; init; }
+    public required string FullFileName { get; init; }
 
     /// <summary>
-    /// File content
+    /// Массив байтов файла
     /// </summary>
-    public byte[] FileContent { get; init; }
+    public required byte[] FileContent { get; init; }
 };

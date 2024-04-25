@@ -8,5 +8,5 @@ public record GetFileListResult
     /// <summary>
     /// Список файлов
     /// </summary>
-    public List<GetFileResult> FileList { get; init; } = new();
+    public List<GetFileResult> FileList { get; init; } = [];
 };

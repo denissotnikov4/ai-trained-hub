@@ -26,6 +26,9 @@ public class DetectController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Экшен для задачи обнаружения объекта
+    /// </summary>
     [HttpPost]
     [ProducesResponseType(typeof(DetectResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> DetectAsync([FromBody] DetectRequest detectRequest)

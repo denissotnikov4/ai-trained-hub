@@ -22,8 +22,8 @@ public class YandexFileStorageService : IFileStorageService
     /// <inheritdoc cref="IFileStorageService.GetFileDataStreamAsync"/>
     public async Task<Stream> GetFileDataStreamAsync(FileModel fileModel)
     {
-        var result = await _objectStorageService.ObjectService.GetAsync(
-            $"{fileModel.FileId}_{fileModel.HandledFileName}.{fileModel.FileExtension}");
+        var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}{fileModel.FileExtension}";
+        var result = await _objectStorageService.ObjectService.GetAsync(fullFileName);
         
         var fileStream = new Result<Stream>();
         if (result.IsSuccessStatusCode)
@@ -31,22 +31,22 @@ public class YandexFileStorageService : IFileStorageService
             fileStream = await result.ReadAsStreamAsync();
         }
         
-        return fileStream.Value;
+        return fileStream.ValueOrDefault;
     }
 
     ///  <inheritdoc cref="IFileStorageService.GetFileBytesAsync"/>
     public async Task<byte[]> GetFileBytesAsync(FileModel fileModel)
     {
-        var result = await _objectStorageService.ObjectService.GetAsync(
-            $"{fileModel.FileId}_{fileModel.HandledFileName}.{fileModel.FileExtension}");
+        var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}{fileModel.FileExtension}";
+        var result = await _objectStorageService.ObjectService.GetAsync(fullFileName);
         
-        var fileStream = new Result<byte[]>();
+        var fileBytesList = new Result<byte[]>();
         if (result.IsSuccessStatusCode)
         {
-            fileStream = await result.ReadAsByteArrayAsync();
+            fileBytesList = await result.ReadAsByteArrayAsync();
         }
         
-        return fileStream.Value;
+        return fileBytesList.ValueOrDefault;
     }
 
     /// <inheritdoc cref="IFileStorageService.SaveFileAsync"/>
@@ -61,7 +61,7 @@ public class YandexFileStorageService : IFileStorageService
     /// <inheritdoc cref="IFileStorageService.DeleteFileAsync"/>
     public async Task DeleteFileAsync(FileModel fileModel)
     {
-        var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}.{fileModel.FileExtension}";
+        var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}{fileModel.FileExtension}";
         await _objectStorageService.ObjectService.DeleteAsync(fullFileName);
     }
 }

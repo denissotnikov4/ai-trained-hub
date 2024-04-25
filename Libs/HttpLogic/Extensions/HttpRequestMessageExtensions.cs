@@ -5,8 +5,16 @@ using System.Threading.Tasks;
 
 namespace HttpLogic.Extensions;
 
+/// <summary>
+/// Расширения для класса HttpRequestMessage, предоставляющие методы для работы с запросами.
+/// </summary>
 public static class HttpRequestMessageExtensions
 {
+    /// <summary>
+    /// Создает поверхностную копию HttpRequestMessage, включая заголовки и содержимое.
+    /// </summary>
+    /// <param name="requestMessage">Исходный HttpRequestMessage.</param>
+    /// <returns>Поверхностная копия исходного HttpRequestMessage.</returns>
     public static async Task<HttpRequestMessage> ShallowCloneAsync(this HttpRequestMessage requestMessage)
     {
         StreamContent? httpContent = null;
@@ -31,7 +39,7 @@ public static class HttpRequestMessageExtensions
             Version = requestMessage.Version,
             Content = httpContent
         };
-
+        
         foreach (var headerPair in requestMessage.Headers)
             messageClone.Headers.Add(headerPair.Key, headerPair.Value);
 

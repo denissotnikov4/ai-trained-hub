@@ -1,5 +1,8 @@
 namespace HttpLogic.Models;
 
+/// <summary>
+/// Перечисление, представляющее различные типы содержимого, используемые в HTTP-запросах и ответах.
+/// </summary>
 public enum ContentType
 {
     Unknown,

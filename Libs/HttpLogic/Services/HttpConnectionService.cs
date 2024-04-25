@@ -1,21 +1,25 @@
-using HttpLogic.Contracts;
+using HttpLogic.Interfaces;
 
 namespace HttpLogic.Services;
 
+/// <summary>
+/// Сервис для создания и управления HTTP-клиентами и отправки HTTP-запросов
+/// </summary>
 internal class HttpConnectionService : IHttpConnectionService
 {
-    private readonly IHttpClientFactory clientFactory;
+    private readonly IHttpClientFactory _clientFactory;
 
     public HttpConnectionService(IHttpClientFactory clientFactory)
     {
-        this.clientFactory = clientFactory;
+        _clientFactory = clientFactory;
     }
 
+    /// <inheritdoc cref="IHttpConnectionService.CreateHttpClient"/>
     public HttpClient CreateHttpClient(string? clientName = null, TimeSpan? timeOut = null)
     {
         var client = string.IsNullOrWhiteSpace(clientName)
-            ? clientFactory.CreateClient()
-            : clientFactory.CreateClient(clientName);
+            ? _clientFactory.CreateClient()
+            : _clientFactory.CreateClient(clientName);
 
         if (timeOut != null)
             client.Timeout = timeOut.Value;
@@ -23,6 +27,7 @@ internal class HttpConnectionService : IHttpConnectionService
         return client;
     }
 
+    /// <inheritdoc cref="IHttpConnectionService.SendRequestAsync"/>
     public async Task<HttpResponseMessage> SendRequestAsync(
         HttpClient httpClient,
         HttpRequestMessage httpRequestMessage,

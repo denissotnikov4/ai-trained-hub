@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Exceptions;
 using Dal.Enums;
 using Dal.Helpers;
 using Dal.Models;
@@ -16,9 +17,9 @@ namespace Logic.Managers.File.Managers;
 /// <inheritdoc cref="IFileManager"/>
 internal class FileManager : IFileManager
 {
-    private IFileRepository _fileRepository;
-    private IFileStorageService _fileStorageService; 
-    private IMapper _mapper;
+    private readonly IFileRepository _fileRepository;
+    private readonly IFileStorageService _fileStorageService; 
+    private readonly IMapper _mapper;
 
     public FileManager(IFileRepository fileRepository, IFileStorageService fileStorageService, IMapper mapper)
     {
@@ -27,10 +28,11 @@ internal class FileManager : IFileManager
         _mapper = mapper;
     }
     
+    /// <inheritdoc cref="IFileManager.UploadFileAsync"/>
     public async Task<CreateFileResult> UploadFileAsync(IFormFile file)
     {
-        var fileName = FileHelper.GetFileNameFromFileNameWithExtension(file.FileName);
-        var fileExtension = FileHelper.GetExtensionFile(file.FileName);
+        var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+        var fileExtension = Path.GetExtension(file.FileName);
         
         var fileDal = new FileDal
         {
@@ -64,7 +66,12 @@ internal class FileManager : IFileManager
         var fileModel = _mapper.Map<FileModel>(fileDal);
         
         var fileBytes = await _fileStorageService.GetFileBytesAsync(fileModel);
-        
+
+        if (fileBytes is null)
+        {
+            throw new ObjectStorageException();
+        }
+
         var fileByIdResult = _mapper.Map<GetFileResult>(fileDal);
         fileByIdResult.FileBytes = fileBytes;
         
@@ -74,8 +81,8 @@ internal class FileManager : IFileManager
     /// <inheritdoc cref="IFileManager.UpdateFileAsync"/>
     public async Task UpdateFileAsync(UpdateFileParam updateFileParam, IFormFile file)
     {
-        var fileName = FileHelper.GetFileNameFromFileNameWithExtension(file.FileName);
-        var fileExtension = FileHelper.GetExtensionFile(file.FileName);
+        var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+        var fileExtension = Path.GetExtension(file.FileName);
         
         var fileDal = new FileDal
         {

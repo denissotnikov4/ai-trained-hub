@@ -8,7 +8,7 @@ namespace HttpLogic.Models;
 public class HttpUploadedFile
 {
     /// <summary>
-    /// File content
+    /// Идентификатор файла
     /// </summary>
     public required Guid FileId { get; set; }
 }

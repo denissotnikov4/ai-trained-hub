@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace Core.Middlewares;
 
+/// <summary>
+/// Middleware обработки ошибок
+/// </summary>
 public class ErrorHandlingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -13,7 +16,10 @@ public class ErrorHandlingMiddleware
     {
         _next = next;
     }
-
+    
+    /// <summary>
+    /// Обрабатывает HTTP-запросы, перехватывает исключения и возвращает ошибку в формате JSON.
+    /// </summary>
     public async Task Invoke(HttpContext context)
     {
         try

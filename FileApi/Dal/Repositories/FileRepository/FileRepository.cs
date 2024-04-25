@@ -13,6 +13,7 @@ namespace Dal.Repositories.FileRepository;
 internal class FileRepository : IFileRepository
 {
     private static readonly string TableName = $"{nameof(FileDal).ToLower()}";
+    
     private readonly IConfiguration _configuration;
 
     public FileRepository(IConfiguration configuration)

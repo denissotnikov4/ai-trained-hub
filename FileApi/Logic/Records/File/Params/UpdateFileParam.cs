@@ -16,5 +16,5 @@ public record UpdateFileParam
     /// Модификатор доступа к файлу
     /// </summary>
     /// <returns></returns>
-    public required AccessModifier AccessModifier { get; init; }
+    public AccessModifier AccessModifier { get; init; }
 }

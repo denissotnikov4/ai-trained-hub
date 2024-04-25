@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Logic;
 
+/// <summary>
+/// Класс содержит методы расширения для IServiceCollection
+/// </summary>
 public static class ForStartup
 {
     /// <summary>

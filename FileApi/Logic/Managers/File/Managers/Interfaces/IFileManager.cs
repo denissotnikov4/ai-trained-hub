@@ -5,27 +5,36 @@ using Microsoft.AspNetCore.Http;
 namespace Logic.Managers.File.Managers.Interfaces;
 
 /// <summary>
-/// Менеджер для работы с файлом
+/// Интерфейс, определяющий контракт для менеджера файлов, предоставляющего операции для работы с файлами.
 /// </summary>
 public interface IFileManager
 {
     /// <summary>
-    /// Загрузить файл
+    /// Загружает файл на сервер.
     /// </summary>
+    /// <param name="file">Объект IFormFile, представляющий загружаемый файл.</param>
+    /// <returns>Результат загрузки файла, содержащий информацию о созданном файле.</returns>
     Task<CreateFileResult> UploadFileAsync(IFormFile file);
     
     /// <summary>
-    /// Получить файл
+    /// Получает файл по его уникальному идентификатору.
     /// </summary>
+    /// <param name="fileId">Уникальный идентификатор файла.</param>
+    /// <returns>Результат получения файла, содержащий информацию о файле и его содержимое.</returns>
     Task<GetFileResult> GetFileByIdAsync(Guid fileId);
 
     /// <summary>
-    /// Обновить файл
+    /// Обновляет файл на сервере.
     /// </summary>
+    /// <param name="updateFileParam">Параметры обновления файла, включая его уникальный идентификатор.</param>
+    /// <param name="file">Объект IFormFile, представляющий обновляемый файл.</param>
+    /// <returns>Задача, завершающаяся после успешного обновления файла.</returns>
     Task UpdateFileAsync(UpdateFileParam updateFileParam, IFormFile file);
     
     /// <summary>
-    /// Удалить файл 
+    /// Удаляет файл с сервера по его уникальному идентификатору.
     /// </summary>
+    /// <param name="fileId">Уникальный идентификатор файла, который нужно удалить.</param>
+    /// <returns>Задача, завершающаяся после успешного удаления файла.</returns>
     Task DeleteFileAsync(Guid fileId);
 }

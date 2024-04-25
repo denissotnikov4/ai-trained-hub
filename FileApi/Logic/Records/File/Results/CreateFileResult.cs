@@ -8,5 +8,5 @@ public record CreateFileResult
     /// <summary>
     /// Идентификатор файла
     /// </summary>
-    public required Guid FileId { get; init; }
+    public Guid FileId { get; init; }
 };
