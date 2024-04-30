@@ -32,7 +32,7 @@ public class DetectManager : IDetectManager
 
         var plottedBytes = await SaveImageToByteArrayAsync(plotted);
 
-        var predictedFileId = await _fileService.SaveFileAsync(plottedBytes, "plotted.png");
+        var predictedFileId = await _fileService.SaveFileAsync(plottedBytes, "imageWithDetected.png");
 
         var detectResult = new DetectResult
         {

@@ -8,7 +8,7 @@ public class ObjectStorageException : BaseCustomException
     {
     }
 
-    public ObjectStorageException() : base("Хранилищу файлов не удаётся получить файл")
+    public ObjectStorageException() : base("Произошла ошибка с хранилищем файлов")
     {
     }
 }

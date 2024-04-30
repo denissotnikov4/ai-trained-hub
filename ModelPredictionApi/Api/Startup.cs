@@ -20,7 +20,7 @@ public class Startup
             mc.AddProfile(new DetectProfile());
         });
 
-        IMapper mapper = mappingConfig.CreateMapper();
+        var mapper = mappingConfig.CreateMapper();
         services.AddSingleton(mapper);
         
         services.AddLogicService();

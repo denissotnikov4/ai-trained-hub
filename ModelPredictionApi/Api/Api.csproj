@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Libs\FileLib\FileLib.csproj" />
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
 

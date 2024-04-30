@@ -62,7 +62,7 @@ public class FileController : ControllerBase
 
         var fileHttpResponse = new FileHttpResponse
         {
-            FileNameWithExtension = $"{file.FileExtension}.{file.OriginalFileName}",
+            FileNameWithExtension = $"{file.OriginalFileName}{file.FileExtension}",
             FileContent = file.FileBytes
         };
         

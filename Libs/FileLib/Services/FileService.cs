@@ -32,7 +32,10 @@ public class FileService : IFileService
             Uri = new Uri($"http://localhost:5057/file/download-private/?FileId={fileId}")
         };
 
-        var response = await _requestService.SendRequestAsync<HttpDownloadedFile>(request);
+        var response = await _requestService.SendRequestAsync<HttpDownloadedFile>(request, new HttpConnectionData
+        {
+            TimeOut = TimeSpan.FromMinutes(10)
+        });
 
         return response.Body;
     }

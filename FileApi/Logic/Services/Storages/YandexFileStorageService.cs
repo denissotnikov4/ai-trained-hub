@@ -1,4 +1,5 @@
 ﻿using AspNetCore.Yandex.ObjectStorage;
+using Core.Exceptions;
 using Dal.Helpers;
 using FluentResults;
 using Logic.Models;
@@ -23,12 +24,12 @@ public class YandexFileStorageService : IFileStorageService
     public async Task<Stream> GetFileDataStreamAsync(FileModel fileModel)
     {
         var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}{fileModel.FileExtension}";
-        var result = await _objectStorageService.ObjectService.GetAsync(fullFileName);
+        var response = await _objectStorageService.ObjectService.GetAsync(fullFileName);
         
         var fileStream = new Result<Stream>();
-        if (result.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            fileStream = await result.ReadAsStreamAsync();
+            fileStream = await response.ReadAsStreamAsync();
         }
         
         return fileStream.ValueOrDefault;
@@ -38,14 +39,18 @@ public class YandexFileStorageService : IFileStorageService
     public async Task<byte[]> GetFileBytesAsync(FileModel fileModel)
     {
         var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}{fileModel.FileExtension}";
-        var result = await _objectStorageService.ObjectService.GetAsync(fullFileName);
+        var response = await _objectStorageService.ObjectService.GetAsync(fullFileName);
         
         var fileBytesList = new Result<byte[]>();
-        if (result.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            fileBytesList = await result.ReadAsByteArrayAsync();
+            fileBytesList = await response.ReadAsByteArrayAsync();
         }
-        
+        else
+        {
+            throw new ObjectStorageException($"Ошибка при получении файла {fileModel.FileId}");
+        }
+
         return fileBytesList.ValueOrDefault;
     }
 
@@ -55,13 +60,24 @@ public class YandexFileStorageService : IFileStorageService
         var handledUniqueFileName = FileHelper.GetHandledUniqueFileName(fileData.FileName, fileId);
 
         await using var fileStream = fileData.OpenReadStream();
-        await _objectStorageService.ObjectService.PutAsync(fileStream, handledUniqueFileName);
+        var response = await _objectStorageService.ObjectService.PutAsync(fileStream, handledUniqueFileName);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ObjectStorageException($"Ошибка при сохранении файла с идентификатором {fileId} в Object Storage");
+        }
     }
 
     /// <inheritdoc cref="IFileStorageService.DeleteFileAsync"/>
     public async Task DeleteFileAsync(FileModel fileModel)
     {
         var fullFileName = $"{fileModel.FileId}_{fileModel.HandledFileName}{fileModel.FileExtension}";
-        await _objectStorageService.ObjectService.DeleteAsync(fullFileName);
+        var response = await _objectStorageService.ObjectService.DeleteAsync(fullFileName);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ObjectStorageException(
+                $"Ошибка при удалении файла с идентификатором {fileModel.FileId} из Object Storage");
+        }
     }
 }
