@@ -1,9 +1,9 @@
-﻿namespace Logic.Records.Detect.Results;
+﻿namespace Logic.Records.Pose.Results;
 
 /// <summary>
-/// Результат обнаружения
+/// Результат задачи типа Pose
 /// </summary>
-public class DetectResult
+public class PoseResult
 {
     /// <summary>
     /// Идентификатор файла с предиктом

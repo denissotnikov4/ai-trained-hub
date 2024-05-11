@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-namespace Api.Controllers.Detect.Dto.Responses;
+namespace Api.Controllers.Pose.Dto.Responses;
 
 /// <summary>
-/// Ответ на задачу обнаружения
+/// Ответ на задачу типа Pose
 /// </summary>
-public record DetectResponse
+public record PoseResponse
 {
     /// <summary>
     /// Идентификатор файла с предиктом

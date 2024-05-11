@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using Api.Controllers.Detect.Profiles;
+using Api.Controllers.Pose.Profiles;
+using Api.Controllers.Segment.Profiles;
 using AutoMapper;
 using Core.Dapper.Connection;
 using Core.Middlewares;
@@ -11,13 +13,22 @@ using Microsoft.OpenApi.Models;
 
 namespace Api;
 
+/// <summary>
+/// Класс Startup содержит конфигурацию и настройки для приложения.
+/// </summary>
 public class Startup
 {
+    /// <summary>
+    /// Метод для настройки сервисов приложения
+    /// </summary>
+    /// <param name="services">Коллекция сервисов</param>
     public void ConfigureServices(IServiceCollection services)
     {
         var mappingConfig = new MapperConfiguration(mc =>
         {
-            mc.AddProfile(new DetectProfile());
+            mc.AddProfile<DetectProfile>();
+            mc.AddProfile<SegmentProfile>();
+            mc.AddProfile<PoseProfile>();
         });
 
         var mapper = mappingConfig.CreateMapper();
@@ -39,6 +50,11 @@ public class Startup
         });
     }
  
+    /// <summary>
+    /// Метод для настройки конвейера обработки HTTP-запросов
+    /// </summary>
+    /// <param name="app">Объект приложения</param>
+    /// <param name="env">Среда хостинга</param>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())

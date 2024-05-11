@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Api.Controllers.Detect.Dto.Requests;
+namespace Api.Controllers.Segment.Dto.Requests;
 
 /// <summary>
-/// Запрос для задач обнаружения 
+/// Запрос на задачу сегментирования
 /// </summary>
-public record struct DetectRequest
+public record SegmentRequest
 {
     /// <summary>
     /// Идентификатор обученной модели

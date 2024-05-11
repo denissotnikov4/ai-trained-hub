@@ -7,11 +7,11 @@ namespace Core.Exceptions;
 /// </summary>
 public class FileNotFoundException : BaseCustomException
 {
-    public FileNotFoundException(string message) : base(message)
+    public FileNotFoundException() : base("Файл не был найден")
     {
     }
-
-    public FileNotFoundException() : base("Файл не был найден")
+    
+    public FileNotFoundException(string message) : base(message)
     {
     }
 }
