@@ -42,7 +42,7 @@ public class FileController : ControllerBase
     /// Загрузить файл
     /// </summary>
     [HttpPost("upload")]
-    [RequestSizeLimit(100_000_000)]
+    [RequestSizeLimit(500_000_000)]
     [ProducesResponseType(typeof(CreateFileResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> UploadFileAsync(IFormFile file)
     {

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Api.Controllers.Detect.Dto.Requests;
+namespace Api.Controllers.Pose.Dto.Requests;
 
 /// <summary>
-/// Запрос для задач обнаружения 
+/// Запрос для задач типа Pose
 /// </summary>
-public record struct DetectRequest
+public record PoseRequest
 {
     /// <summary>
     /// Идентификатор обученной модели

@@ -1,6 +1,8 @@
 ﻿using Compunet.YoloV8;
+using Compunet.YoloV8.Metadata;
 using Compunet.YoloV8.Plotting;
 using FileLib.Services.Interfaces;
+using Logic.Helpers;
 using Logic.Managers.Detect.Interfaces;
 using Logic.Records.Detect.Params;
 using Logic.Records.Detect.Results;
@@ -23,16 +25,19 @@ public class DetectManager : IDetectManager
     {
         var model = await _fileService.GetFileAsync(detectParam.ModelId);
         var file = await _fileService.GetFileAsync(detectParam.FileId);
-
+        
         using var predictor = YoloV8Predictor.Create(model.FileContent);
-
+        
+        PredictionHelper.ThrowIfModelDoesNotSupportTask(predictor, YoloV8Task.Detect);
+        
         var result = await predictor.DetectAsync(file.FileContent);
+        
         using var image = Image.Load(file.FileContent);
         using var plotted = await result.PlotImageAsync(image);
 
-        var plottedBytes = await SaveImageToByteArrayAsync(plotted);
-
-        var predictedFileId = await _fileService.SaveFileAsync(plottedBytes, "imageWithDetected.png");
+        var predictedFileName = "imageWithDetect.png";
+        var plottedBytes = await PredictionHelper.ConvertImageToByteArrayAsync(plotted);
+        var predictedFileId = await _fileService.SaveFileAsync(plottedBytes, predictedFileName);
 
         var detectResult = new DetectResult
         {
@@ -40,24 +45,5 @@ public class DetectManager : IDetectManager
         };
 
         return detectResult;
-    }
-    
-    /// <summary>
-    /// Сохраняет изображение в массив байтов
-    /// </summary>
-    private async Task<byte[]> SaveImageToByteArrayAsync(Image plotted)
-    {
-        var tempFilePath = Path.GetTempFileName();
-
-        await using (var fileStream = File.Create(tempFilePath))
-        {
-            await plotted.SaveAsync(fileStream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
-        }
-
-        var plottedBytes = await File.ReadAllBytesAsync(tempFilePath);
-        
-        File.Delete(tempFilePath); 
-
-        return plottedBytes;
     }
 }
