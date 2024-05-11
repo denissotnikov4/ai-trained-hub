@@ -13,11 +13,7 @@ public class FileMappingProfile : Profile
 {
     public FileMappingProfile()
     {
-        CreateMap<CreateFileRequest, CreateFileParam>()
-            .ForMember(x => x.AccessModifier, y => y.MapFrom(z => z.AccessModifier));
-        
         CreateMap<UpdateFileRequest, UpdateFileParam>()
-            .ForMember(x => x.FileId, y => y.MapFrom(z => z.FileId))
-            .ForMember(x => x.AccessModifier, y => y.MapFrom(z => z.AccessModifier));
+            .ForMember(x => x.FileId, y => y.MapFrom(z => z.FileId));
     }
 }

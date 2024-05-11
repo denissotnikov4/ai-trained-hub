@@ -1,9 +1,11 @@
-﻿using System.Reflection;
+using System.Net.Mime;
+using System.Reflection;
 using Core.Constants;
 using Dapper;
 using FluentResults;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ContentType = Azure.Core.ContentType;
 
 namespace Dal.Helpers;
 
@@ -12,9 +14,76 @@ namespace Dal.Helpers;
 /// </summary>
 public static class FileHelper
 {
-    private static readonly Lazy<IDictionary<string, string>> _mappings = new(BuildMappings);
+    private static readonly Lazy<IDictionary<string, string>> Mappings = new(BuildMappings);
+    
+    /// <summary>
+    /// Получить динамические параметры для sql-запроса
+    /// </summary>
+    /// <param name="TModel"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static DynamicParameters GetDynamicParameters<T>(T TModel)
+    {
+        return ProcessProperties<T, DynamicParameters>(TModel, (parameters, property, value) =>
+        {
+            if (value is not null)
+            {
+                parameters.Add(property.Name, value);
+            }
+        });
+    }
 
-    private static IDictionary<string, string> BuildMappings()
+    /// <summary>
+    /// Получить поля для обновления
+    /// </summary>
+    /// <param name="TModel"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static List<string> GetFieldToUpdateList<T>(T TModel)
+    {
+        return ProcessProperties<T, List<string>>(TModel, (list, property, value) =>
+        {
+            if (value is not null)
+            {
+                list.Add($"\"{property.Name}\" = {DataBaseConstants.ParametersPrefix}{property.Name}");
+            }
+        });
+    }
+
+    /// <summary>
+    /// Получить уникальное обработанное значение
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <param name="fileId"></param>
+    /// <returns></returns>
+    public static string GetHandledUniqueFileName(string fileName, Guid fileId)
+    {
+        return $"{fileId}_{fileName.Replace(" ", "")}";
+    }
+
+    /// <summary>
+    /// Возвращает mime тип
+    /// </summary>
+    /// <param name="extension"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static string GetMimeType(string extension)
+    {
+        ArgumentNullException.ThrowIfNull(extension);
+
+        if (!extension.StartsWith("."))
+        {
+            extension = "." + extension;
+        }
+
+        return Mappings.Value.TryGetValue(extension, out var mime) ? mime : ContentType.ApplicationOctetStream.ToString();
+    }
+    
+    /// <summary>
+    /// Создает словарь, сопоставляющий расширения файлов с их MIME-типами и наоборот
+    /// </summary>
+    /// <returns>Словарь сопоставлений MIME-типов и расширений файлов.</returns>
+    private static Dictionary<string, string> BuildMappings()
     {
         var mappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
 
@@ -715,99 +784,6 @@ public static class FileHelper
         }
 
         return mappings;
-    }
-    
-    /// <summary>
-    /// Получить динамические параметры для sql-запроса
-    /// </summary>
-    /// <param name="TModel"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static DynamicParameters GetDynamicParameters<T>(T TModel)
-    {
-        return ProcessProperties<T, DynamicParameters>(TModel, (parameters, property, value) =>
-        {
-            if (value != null)
-            {
-                parameters.Add(property.Name, value);
-            }
-        });
-    }
-
-    /// <summary>
-    /// Получить поля для обновления
-    /// </summary>
-    /// <param name="TModel"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static List<string> GetFieldToUpdateList<T>(T TModel)
-    {
-        return ProcessProperties<T, List<string>>(TModel, (list, property, value) =>
-        {
-            if (value != null)
-            {
-                list.Add($"\"{property.Name}\" = {DataBaseConstants.ParametersPrefix}{property.Name}");
-            }
-        });
-    }
-
-    /// <summary>
-    /// Возвращает название файла без расширения
-    /// </summary>
-    /// <param name="fullFileName">Название файла вместе с расиширением</param>
-    /// <returns>Название файла без расширения</returns>
-    public static string GetFileNameFromFileNameWithExtension(string fullFileName)
-    {
-        if (fullFileName is null)
-        {
-            throw new NullReferenceException();
-        }
-
-        return fullFileName.Split(".")[0];
-    }
-
-    /// <summary>
-    /// Возвращает расширение файла
-    /// </summary>
-    /// <param name="fullFileName">Название файла вместе с расиширением</param>
-    /// <returns>Расширение файла</returns>
-    public static string GetExtensionFile(string fullFileName)
-    {
-        if (fullFileName is null)
-        {
-            throw new NullReferenceException();
-        }
-
-        return fullFileName.Split(".")[^1];
-    }
-
-    /// <summary>
-    /// Получить уникальное обработанное значение
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="fileId"></param>
-    /// <returns></returns>
-    public static string GetHandledUniqueFileName(string fileName, Guid fileId)
-    {
-        return $"{fileId}_{fileName.Replace(" ", "")}";
-    }
-
-    /// <summary>
-    /// Возвращает mime тип
-    /// </summary>
-    /// <param name="extension"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    public static string GetMimeType(string extension)
-    {
-        ArgumentNullException.ThrowIfNull(extension);
-
-        if (!extension.StartsWith("."))
-        {
-            extension = "." + extension;
-        }
-
-        return _mappings.Value.TryGetValue(extension, out var mime) ? mime : "application/octet-stream";
     }
     
     /// <summary>

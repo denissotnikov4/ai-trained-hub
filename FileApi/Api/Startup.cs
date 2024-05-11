@@ -2,70 +2,97 @@
 using AspNetCore.Yandex.ObjectStorage.Extensions;
 using AutoMapper;
 using Core.Dapper.Connection;
-using Core.Migration.Extensions;
+using Core.Middlewares;
+using Core.Migrations.Extensions;
 using Dal;
 using Logic;
 using Microsoft.OpenApi.Models;
 using FileMappingProfile = Api.Controllers.File.Profiles.FileMappingProfile;
 
-namespace Api
+namespace Api;
+
+/// <summary>
+/// Класс Startup содержит конфигурацию и настройки для приложения.
+/// </summary>
+public class Startup
 {
-    public class Startup
+    private readonly IConfiguration _configuration;
+
+    /// <summary>
+    /// Конструктор класса Startup, который принимает конфигурацию приложения.
+    /// </summary>
+    /// <param name="configuration">Конфигурация приложения.</param>
+    public Startup(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-
-        public Startup(IConfiguration configuration)
+        _configuration = configuration;
+    }
+        
+    /// <summary>
+    /// Метод для настройки сервисов приложения
+    /// </summary>
+    /// <param name="services">Коллекция сервисов</param>
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddCors(options =>
         {
-            _configuration = configuration;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
+            options.AddPolicy("Policy1",
+                policy =>
+                {
+                    policy.WithOrigins("https://console.yandex.cloud/");
+                });
+        });
+        
+        services.AddSingleton<DapperContext>();
+        services.AddMigrationRunner(_configuration, typeof(Dal.Migrations.InitialMigration).Assembly);
+        
+        var mappingConfig = new MapperConfiguration(mc =>
         {
-            services.AddSingleton<DapperContext>();
-            services.AddMigrationRunner(_configuration, typeof(Dal.Migrations.InitialMigration).Assembly);
+            mc.AddProfile(new Logic.Profiles.File.FileMappingProfile());
+            mc.AddProfile(new FileMappingProfile());
+        });
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new Logic.Profiles.File.FileMappingProfile());
-                mc.AddProfile(new FileMappingProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+        var mapper = mappingConfig.CreateMapper();
+        services.AddSingleton(mapper);
             
-            services.AddYandexObjectStorage(_configuration);
+        services.AddYandexObjectStorage(_configuration);
 
-            services.AddLogicService();
-            services.AddDalService();
+        services.AddLogicService();
+        services.AddDalService();
         
-            services.AddControllers();
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-
-                // Указываем путь к XML-файлу комментариев
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
-        }
- 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
         {
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-        
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            // Указываем путь к XML-файлу комментариев
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+        });
+    }
+ 
+    /// <summary>
+    /// Метод для настройки конвейера обработки HTTP-запросов
+    /// </summary>
+    /// <param name="app">Объект приложения</param>
+    /// <param name="env">Среда хостинга</param>
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+            
+        app.UseMiddleware<ErrorHandlingMiddleware>();
+        
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

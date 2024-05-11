@@ -5,9 +5,19 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{93141571-CE94-46B1-8129-46371E003D25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dal", "Dal\Dal.csproj", "{B85B6E5C-0FF8-4FF6-BFE0-E95A25451406}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{22BF1B4E-C487-40FE-A5DA-92CF78FCE300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Libs\Core\Core.csproj", "{CDD2396F-AB2B-4C8A-A9DA-03F66913E811}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{C8649635-2243-47C0-823B-454B94849FE0}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\service-api\Libs\Shared\CoreLib\obj\Debug\net7.0\.NETCoreApp,Version = v7.0.AssemblyAttributes.cs = ..\..\service-api\Libs\Shared\CoreLib\obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs
+		..\..\service-api\Libs\Shared\CoreLib\obj\Debug\net8.0\.NETCoreApp,Version = v8.0.AssemblyAttributes.cs = ..\..\service-api\Libs\Shared\CoreLib\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpLogic", "..\Libs\HttpLogic\HttpLogic.csproj", "{3DEA975B-90E9-472F-BA44-BF501AE3613D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLib", "..\Libs\FileLib\FileLib.csproj", "{2211A7FB-12D8-47C9-BDD7-B8A89DA24CF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,13 +32,26 @@ Global
 		{93141571-CE94-46B1-8129-46371E003D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93141571-CE94-46B1-8129-46371E003D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93141571-CE94-46B1-8129-46371E003D25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B85B6E5C-0FF8-4FF6-BFE0-E95A25451406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B85B6E5C-0FF8-4FF6-BFE0-E95A25451406}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B85B6E5C-0FF8-4FF6-BFE0-E95A25451406}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B85B6E5C-0FF8-4FF6-BFE0-E95A25451406}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22BF1B4E-C487-40FE-A5DA-92CF78FCE300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22BF1B4E-C487-40FE-A5DA-92CF78FCE300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22BF1B4E-C487-40FE-A5DA-92CF78FCE300}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22BF1B4E-C487-40FE-A5DA-92CF78FCE300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDD2396F-AB2B-4C8A-A9DA-03F66913E811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDD2396F-AB2B-4C8A-A9DA-03F66913E811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDD2396F-AB2B-4C8A-A9DA-03F66913E811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDD2396F-AB2B-4C8A-A9DA-03F66913E811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DEA975B-90E9-472F-BA44-BF501AE3613D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DEA975B-90E9-472F-BA44-BF501AE3613D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DEA975B-90E9-472F-BA44-BF501AE3613D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DEA975B-90E9-472F-BA44-BF501AE3613D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2211A7FB-12D8-47C9-BDD7-B8A89DA24CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2211A7FB-12D8-47C9-BDD7-B8A89DA24CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2211A7FB-12D8-47C9-BDD7-B8A89DA24CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2211A7FB-12D8-47C9-BDD7-B8A89DA24CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CDD2396F-AB2B-4C8A-A9DA-03F66913E811} = {C8649635-2243-47C0-823B-454B94849FE0}
+		{3DEA975B-90E9-472F-BA44-BF501AE3613D} = {C8649635-2243-47C0-823B-454B94849FE0}
+		{2211A7FB-12D8-47C9-BDD7-B8A89DA24CF5} = {C8649635-2243-47C0-823B-454B94849FE0}
 	EndGlobalSection
 EndGlobal

@@ -7,36 +7,35 @@ public class FileModel
     /// <summary>
     /// Идентификатор файла
     /// </summary>
-    public Guid FileId { get; set; }
+    public Guid FileId { get; init; }
     
     /// <summary>
     /// Изначальное имя файла
     /// </summary>
-    public string OriginalFileName { get; set; }
-
-
+    public string OriginalFileName { get; init; }
+    
     /// <summary>
     /// Обработанное имя файла
     /// </summary>
-    public string HandledFileName { get; set; }
+    public string HandledFileName { get; init; }
 
     /// <summary>
     /// Расширение файла
     /// </summary>
-    public string FileExtension { get; set; }
+    public string FileExtension { get; init; }
 
     /// <summary>
     /// Время создания файла
     /// </summary>
-    public DateTime? CreatedTime { get; set; }
+    public DateTime? CreatedTime { get; init; }
 
     /// <summary>
     /// Размер файла
     /// </summary>
-    public long FileSize { get; set; }
+    public long FileSize { get; init; }
 
     /// <summary>
     /// Модификатор доступа к файлу
     /// </summary>
-    public AccessModifier AccessModifier { get; set; }
+    public AccessModifier AccessModifier { get; init; }
 }

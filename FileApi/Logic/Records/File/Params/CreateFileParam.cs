@@ -10,5 +10,5 @@ public class CreateFileParam
     /// <summary>
     /// Модификатор доступа к файлу
     /// </summary>
-    public AccessModifier AccessModifier { get; set; }
+    public AccessModifier AccessModifier { get; init; }
 }

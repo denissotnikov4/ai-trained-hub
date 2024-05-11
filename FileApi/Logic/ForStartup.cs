@@ -3,10 +3,14 @@ using Logic.Managers.File.Managers;
 using Logic.Managers.File.Managers.Interfaces;
 using Logic.Services;
 using Logic.Services.Interfaces;
+using Logic.Services.Storages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Logic;
 
+/// <summary>
+/// Класс содержит методы расширения для IServiceCollection
+/// </summary>
 public static class ForStartup
 {
     /// <summary>

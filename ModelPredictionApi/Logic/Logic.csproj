@@ -7,4 +7,20 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="YoloV8" Version="4.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Libs\FileLib\FileLib.csproj" />
+      <ProjectReference Include="..\..\Libs\HttpLogic\HttpLogic.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Program.cs" />
+    </ItemGroup>
 </Project>

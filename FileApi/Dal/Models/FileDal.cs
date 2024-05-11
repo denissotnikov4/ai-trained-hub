@@ -12,8 +12,7 @@ public record FileDal : BaseEntityDal<Guid>
     /// Изначальное имя файла
     /// </summary>
     public string OriginalFileName { get; set; }
-
-
+    
     /// <summary>
     /// Обработанное имя файла
     /// </summary>

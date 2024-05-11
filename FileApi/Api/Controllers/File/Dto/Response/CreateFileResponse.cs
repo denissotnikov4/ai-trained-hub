@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers.Dto.Response;
+using Newtonsoft.Json;
+
+namespace Api.Controllers.Dto.Response;
 
 /// <summary>
 /// Ответ на создание файла
@@ -8,5 +10,6 @@ public record CreateFileResponse
     /// <summary>
     /// Идентификатор файла
     /// </summary>
-    public required Guid FileId { get; set; }
+    [JsonProperty("fileId")]
+    public required Guid FileId { get; init; }
 };

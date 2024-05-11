@@ -3,11 +3,15 @@ using FluentMigrator;
 
 namespace Dal.Migrations;
 
+/// <summary>
+/// Миграция по добавлению таблиц filedal в бд
+/// </summary>
 [Migration(202402272241)]
 public class Date202402272241_AddTable_FileDal : Migration
 {
     private readonly string _fileTableName = nameof(FileDal).ToLower();
     
+    /// <inheritdoc cref="Migration.Up"/>
     public override void Up()
     {
         if (!Schema.Table(_fileTableName).Exists())
@@ -23,6 +27,7 @@ public class Date202402272241_AddTable_FileDal : Migration
         }
     }
 
+    /// <inheritdoc cref="Migration.Down"/>
     public override void Down()
     {
         Delete.Table(_fileTableName);

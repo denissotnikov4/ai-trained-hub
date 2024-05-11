@@ -8,13 +8,12 @@ public record GetFileResult
     /// <summary>
     /// Изначальное имя файла
     /// </summary>
-    public string OriginalFileName { get; set; }
-
-
+    public string OriginalFileName { get; init; }
+    
     /// <summary>
     /// Обработанное имя файла
     /// </summary>
-    public string HandledFileName { get; set; }
+    public string HandledFileName { get; init; }
 
     /// <summary>
     /// Расширение файла
@@ -34,5 +33,10 @@ public record GetFileResult
     /// <summary>
     /// Stream файла
     /// </summary>
-    public Stream FileStream { get; set; }
+    public Stream FileStream { get; init; }
+
+    /// <summary>
+    /// Массив байтов файла
+    /// </summary>
+    public byte[] FileBytes { get; set; }
 }
