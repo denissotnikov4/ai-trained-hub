@@ -8,5 +8,5 @@ public class PoseResult
     /// <summary>
     /// Идентификатор файла с предиктом
     /// </summary>
-    public required Guid PredictedFileId { get; init; }
+    public Guid PredictedFileId { get; init; }
 }

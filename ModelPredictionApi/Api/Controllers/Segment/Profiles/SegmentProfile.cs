@@ -11,7 +11,6 @@ namespace Api.Controllers.Segment.Profiles;
 /// </summary>
 public class SegmentProfile : Profile
 {
-    /// <inheritdoc />
     public SegmentProfile()
     {
         CreateMap<SegmentRequest, SegmentParam>()

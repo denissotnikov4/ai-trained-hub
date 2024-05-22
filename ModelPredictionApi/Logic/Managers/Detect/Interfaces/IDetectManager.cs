@@ -9,7 +9,7 @@ namespace Logic.Managers.Detect.Interfaces;
 public interface IDetectManager
 {
     /// <summary>
-    /// Обнаружение
+    /// Сделать предикт для задач обнаружения
     /// </summary>
     public Task<DetectResult> DetectAsync(DetectParam detectParam);
 }

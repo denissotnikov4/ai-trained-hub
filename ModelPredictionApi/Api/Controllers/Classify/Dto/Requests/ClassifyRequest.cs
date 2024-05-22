@@ -1,11 +1,11 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Api.Controllers.Segment.Dto.Requests;
+namespace Api.Controllers.Classify.Dto.Requests;
 
 /// <summary>
-/// Запрос на задачу сегментирования
+/// Запрос для задач классификации
 /// </summary>
-public record SegmentRequest
+public record ClassifyRequest
 {
     /// <summary>
     /// Идентификатор обученной модели
