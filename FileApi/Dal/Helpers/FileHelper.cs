@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using System.Reflection;
 using Core.Constants;
 using Dapper;

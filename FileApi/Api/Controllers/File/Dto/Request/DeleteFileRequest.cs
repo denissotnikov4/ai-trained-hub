@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace Api.Controllers.File.Dto.Request;

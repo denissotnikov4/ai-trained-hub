@@ -11,6 +11,7 @@ namespace Api.Controllers.Detect.Profiles;
 /// </summary>
 public class DetectProfile : Profile
 {
+    /// <inheritdoc />
     public DetectProfile()
     {
         CreateMap<DetectRequest, DetectParam>()
