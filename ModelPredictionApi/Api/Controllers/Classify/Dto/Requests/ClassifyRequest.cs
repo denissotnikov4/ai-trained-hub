@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-namespace Api.Controllers.Pose.Dto.Requests;
+namespace Api.Controllers.Classify.Dto.Requests;
 
 /// <summary>
-/// Запрос для задач типа Pose
+/// Запрос для задач классификации
 /// </summary>
-public record PoseRequest
+public record ClassifyRequest
 {
     /// <summary>
     /// Идентификатор обученной модели

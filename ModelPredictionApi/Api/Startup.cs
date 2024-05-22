@@ -1,13 +1,11 @@
 ﻿using System.Reflection;
+using Api.Controllers.Classify.Profiles;
 using Api.Controllers.Detect.Profiles;
 using Api.Controllers.Pose.Profiles;
 using Api.Controllers.Segment.Profiles;
 using AutoMapper;
-using Core.Dapper.Connection;
 using Core.Middlewares;
 using FileLib.Extension;
-using FileLib.Services;
-using FileLib.Services.Interfaces;
 using Logic;
 using Microsoft.OpenApi.Models;
 
@@ -29,6 +27,7 @@ public class Startup
             mc.AddProfile<DetectProfile>();
             mc.AddProfile<SegmentProfile>();
             mc.AddProfile<PoseProfile>();
+            mc.AddProfile<ClassifyProfile>();
         });
 
         var mapper = mappingConfig.CreateMapper();

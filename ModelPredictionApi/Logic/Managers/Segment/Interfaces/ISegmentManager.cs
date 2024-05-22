@@ -9,7 +9,7 @@ namespace Logic.Managers.Segment.Interfaces;
 public interface ISegmentManager
 {
     /// <summary>
-    /// Сегментирование
+    /// Сделать предикт для задач сегментирования
     /// </summary>
     public Task<SegmentResult> SegmentAsync(SegmentParam segmentParam);
 }
