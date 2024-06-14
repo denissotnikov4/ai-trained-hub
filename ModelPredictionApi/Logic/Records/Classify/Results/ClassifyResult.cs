@@ -1,9 +1,9 @@
-﻿namespace Logic.Records.Segment.Results;
+﻿namespace Logic.Records.Classify.Results;
 
 /// <summary>
-/// Результат работы задачи сегментирования
+/// Результат классификации
 /// </summary>
-public class SegmentResult
+public class ClassifyResult
 {
     /// <summary>
     /// Идентификатор файла с предиктом

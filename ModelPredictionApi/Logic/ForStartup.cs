@@ -1,4 +1,6 @@
-﻿using Logic.Managers.Detect;
+﻿using Logic.Managers.Classify;
+using Logic.Managers.Classify.Interfaces;
+using Logic.Managers.Detect;
 using Logic.Managers.Detect.Interfaces;
 using Logic.Managers.Pose;
 using Logic.Managers.Pose.Interfaces;
@@ -21,6 +23,7 @@ public static class ForStartup
         services.AddScoped<IDetectManager, DetectManager>();
         services.AddScoped<ISegmentManager, SegmentManager>();
         services.AddScoped<IPoseManager, PoseManager>();
+        services.AddScoped<IClassifyManager, ClassifyManager>();
 
         return services;
     }

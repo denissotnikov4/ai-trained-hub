@@ -11,7 +11,6 @@ namespace Api.Controllers.Pose.Profiles;
 /// </summary>
 public class PoseProfile : Profile
 {
-    /// <inheritdoc />
     public PoseProfile()
     {
         CreateMap<PoseRequest, PoseParam>()
